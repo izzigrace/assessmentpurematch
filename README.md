@@ -1,1 +1,5 @@
-# assessmentpurematch
+# Requirement1
+For requirement one, the way I would go about this is to first set up my express app, make a postgres server and database, and establish a connection to my database using sequelize. Then, I can create a User model with the attributes name, email, and password; as well as a Posts model with the attributes title, description, and photoURL. The photoURL attribute will just contain a URL to the photo stored using AWS S3, since it is more suited for storing larger data such as photos, videos, or audio files; and postgres is more suited for structured data. I also need to create a register route if the user clicks on register, which will check our database for the inputted email to make sure the user doesn't already exist. If it is in fact a new user, we can post the name, email, and encrypted password to our database. I am also going to create a login route, which checks to see if the inputted password is equal to the given users hashed password stored in our DB. If it is, I can send a JWT token. As for posts, I will make a route to get all posts, which returns all posts in our DB; and a route to add a post to our DB.
+
+Here is a diagram of how my app and files will interact at this stage in the requirements:
+![screenshot](https://user-images.githubusercontent.com/103616900/225774256-e54d75ea-d9ce-4cc6-9eae-9414b36787de.jpg)
