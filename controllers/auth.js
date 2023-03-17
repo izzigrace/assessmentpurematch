@@ -2,18 +2,27 @@ const { User } = require('../models');
 const { uploadPhoto } = require('../aws/s3');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 // Create a new post
 exports.register = async (req, res) => {
+  console.log('register called');
   try {
-    const { name, email, password } = req.body;
+    const { id, name, email, password } = req.body;
 
-    // Hash password
+    // check if email exists in our db
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Email already linked to an account' });
+    }
+
+    // hash/encrypt password before sending
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create a new user record in database
+    // make a new user
     const newUser = await User.create({
+      id,
       name,
       email,
       password: hashedPassword,
@@ -38,9 +47,9 @@ exports.login = async (req, res) => {
     }
 
     // Compare password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordSame = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordMatch) {
+    if (!isPasswordSame) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 

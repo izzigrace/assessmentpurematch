@@ -28,7 +28,6 @@ exports.create = async (req, res) => {
 //get all posts
 exports.getAllPosts = async (req, res) => {
   try {
-    const { id } = req.body.id
 
     const allPosts = await Post.findAll();
 

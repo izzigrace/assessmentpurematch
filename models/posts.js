@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Posts.init({
     id: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     title: {
@@ -39,15 +40,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return Posts;
 };
-
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Successfully estblished connection');
-    await User.sync({ force: true });
-    console.log('Successful syncing with user model');
-  } catch (error) {
-    console.error('Cannot to connect to the database:', error);
-  }
-})();
 
