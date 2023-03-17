@@ -14,8 +14,8 @@ sequelize
   .authenticate()
   .then(() => {
     console.log('Connection to the database has been established successfully.');
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server running on port ${process.env.PORT || 3000}`);
+    app.listen(process.env.DB_PORT || 3333, () => {
+      console.log(`Server running on port ${process.env.DB_PORT || 3333}`);
     });
   })
   .catch((err) => {
