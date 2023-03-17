@@ -4,13 +4,26 @@ const { sequelize } = require('./models');
 
 const port = 3000;
 
-app.get('/', (req, res) => {
-  console.log(req.params);
-  console.log(res);
-  res.send('Hello World!');
+const authRoutes = require('./routes/auth.js');
+const postRoutes = require('./routes/posts.js');
 
-});
+app.use('/auth', authRoutes);
+app.use('/posts', postRoutes);
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection to the database has been established successfully.');
+    app.listen(process.env.PORT || 3000, () => {
+      console.log(`Server running on port ${process.env.PORT || 3000}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 app.listen(port, () => {
   console.log('Server started on port 3000');
 });
+
+
