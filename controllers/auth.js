@@ -3,7 +3,6 @@ const { uploadPhoto } = require('../aws/s3');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-
 // Create a new post
 exports.register = async (req, res) => {
   try {

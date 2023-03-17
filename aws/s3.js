@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-
 const s3 = new AWS.S3();
 
 module.exports = {
@@ -25,3 +24,4 @@ module.exports = {
     await s3.deleteObject(params).promise();
   },
 };
+
