@@ -10,14 +10,19 @@ const postController = require('./controllers/posts.js');
 const authController = require('./controllers/auth.js');
 app.use(cors());
 app.use(express.json());
+const multer = require('multer');
+
+const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } });
 
 
+// make routes
 app.post('/login', authController.login);
 app.post('/register', authController.register);
-app.post('/makePost', postController.create);
+app.post('/makePost', upload.single('photo'), postController.create);
 app.get('/getPosts', postController.getAllPosts);
 
 
+//check sequelize connection to database
 sequelize
   .authenticate()  //returns a promise
   .then(() => {

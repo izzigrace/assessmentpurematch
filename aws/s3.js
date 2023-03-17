@@ -4,20 +4,20 @@ const s3 = new AWS.S3();
 module.exports = {
   async upload(file) {
     AWS.config.update({
-      accessKeyId: process.env.ACCESS_KEY, // Access key ID
-      secretAccesskey: process.env.SECRET_ACCESS_KEY, // Secret access key
-      region: "us-west-2" //Region
+      accessKeyId: process.env.ACCESS_KEY,
+      secretAccesskey: process.env.SECRET_ACCESS_KEY,
+      region: "us-west-2"
     })
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: key,
+      Key: file.originalname,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read',
     };
 
-    const { Location } = await s3.upload(params).promise();
+    const response = await s3.upload(params).promise();
+    const URL = response.Location;
 
     return Location;
   }
