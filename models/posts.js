@@ -1,15 +1,17 @@
 'use strict';
 const user = require('./user');
 const { sequelize } = require('../config/config');
-const { Model } = require('sequelize');
 
 
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Posts extends Model {
 
     static associate(models) {
       // define association here
-      Posts.belongsTo(models.User, { foreignKey: 'userId'});
+      Posts.belongsTo(models.User, { foreignKey: 'id'});
     }
   }
 

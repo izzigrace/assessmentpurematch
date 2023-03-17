@@ -12,14 +12,6 @@ app.use(cors());
 app.use(express.json());
 
 
-
-// app.post('/', (req, res) => {
-//   res.send('POST request to the homepage')
-// });
-// app.get('/', (req, res) => {
-//   res.send('get happened')
-// })
-
 app.post('/login', authController.login);
 app.post('/register', authController.register);
 app.post('/makePost', postController.create);
