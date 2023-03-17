@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-// Create a new post
+// register new user
 exports.register = async (req, res) => {
-  console.log('register called');
+  console.log('register req ', req.body, req.user, req.params)
+
   try {
     const { id, name, email, password } = req.body;
 
@@ -22,7 +23,6 @@ exports.register = async (req, res) => {
 
     // make a new user
     const newUser = await User.create({
-      id,
       name,
       email,
       password: hashedPassword,
@@ -35,6 +35,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// log in existing user
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

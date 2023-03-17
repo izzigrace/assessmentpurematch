@@ -2,7 +2,6 @@
 const user = require('./user');
 const { sequelize } = require('../config/config');
 
-
 const {
   Model
 } = require('sequelize');
@@ -11,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // define association here
-      Posts.belongsTo(models.User, { foreignKey: 'id'});
+      Posts.belongsTo(models.User, { foreignKey: 'userId'});
     }
   }
 
@@ -42,4 +41,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return Posts;
 };
+
 
