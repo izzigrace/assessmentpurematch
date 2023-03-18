@@ -2,18 +2,14 @@ const { Posts } = require('../models');
 const s3Functions = require('../aws/s3');
 
 // Create a new post
-exports.create = async (req, res) => {
+exports.createPost = async (req, res) => {
   try {
     const { title, description, userId } = req.body;
-
-    //store image in s3
-    const photoURL = await s3Functions.upload(req.file);
 
     //post data to Posts table
     const newPost = await Posts.create({
       title,
       description,
-      photoURL,
       userId
     });
 
@@ -42,11 +38,41 @@ exports.uploadPhotos = async (req, res) => {
   }
 }
 
+exports.editPost = async (req, res) => {
+  try {
+    const { title, description, userId, postId } = req.body;
+
+    Posts.update(
+      {
+        title:  title,
+        description: description
+      },
+      { where: {
+        postId: postId,
+        userId: userId
+       } }
+    )
+
+  } catch (err) {
+    if (err) {
+      console.error(err);
+      res.sendStatus(500).json({message: 'Error editing post'})
+    }
+  }
+}
+
 //get all posts
 exports.getAllPosts = async (req, res) => {
   try {
     const allPosts = await Posts.findAll();
-    return res.json(allPosts);
+    console.log('allpostsssssssssssss', allPosts);
+
+    return allPosts.map(post => ({
+      title: post.title,
+      description: post.description,
+      createdAt: post.getTimeAgo(),
+      userId: post.userId
+    }));
 
   } catch(err) {
     console.error(err);

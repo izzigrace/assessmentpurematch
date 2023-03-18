@@ -1,6 +1,7 @@
 'use strict';
 const user = require('./user');
 const { sequelize } = require('../config/config');
+const moment = require('moment');
 
 const {
   Model
@@ -28,14 +29,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    }
   }, {
     sequelize,
     modelName: 'Posts',
   });
 
+  // calculate how long ago post was made
+  Posts.prototype.getTimeAgo = function() {
+    return moment(this.createdAt).fromNow();
+  }
+
+
   Posts.sync();
 
   return Posts;
 };
-
-

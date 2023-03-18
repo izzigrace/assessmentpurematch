@@ -17,8 +17,9 @@ const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } });
 app.post('/login', authController.login);
 app.post('/register', authController.register);
 //posts routes
-app.post('/makePost', upload.array('photos', 5), postController.uploadPhotos, postController.create);
+app.post('/makePost', upload.array('photos', 5), postController.uploadPhotos, postController.createPost);
 app.get('/getPosts', postController.getAllPosts);
+app.post('/editPost', postController.editPost)
 
 
 //check sequelize connection to database
