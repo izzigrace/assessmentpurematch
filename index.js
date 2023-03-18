@@ -4,7 +4,7 @@ const cors = require('cors');
 const { sequelize } = require('./models');
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
-const port = process.env.port;
+const port = process.env.PORT;
 const postController = require('./controllers/posts.js');
 const authController = require('./controllers/auth.js');
 app.use(cors());
@@ -17,7 +17,7 @@ const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } });
 app.post('/login', authController.login);
 app.post('/register', authController.register);
 //posts routes
-app.post('/makePost', upload.single('photo'), postController.create);
+app.post('/makePost', upload.array('photos', 5), postController.uploadPhotos, postController.create);
 app.get('/getPosts', postController.getAllPosts);
 
 

@@ -3,9 +3,8 @@ const s3Functions = require('../aws/s3');
 
 // Create a new post
 exports.create = async (req, res) => {
-
   try {
-    const { title, description, photo, userId } = req.body;
+    const { title, description, userId } = req.body;
 
     //store image in s3
     const photoURL = await s3Functions.upload(req.file);
@@ -21,9 +20,27 @@ exports.create = async (req, res) => {
     return res.status(201).json(newPost);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({message: 'Error with server'});
+    return res.status(500).json({message: 'Error making post'});
   }
 };
+
+exports.uploadPhotos = async (req, res) => {
+  try {
+    //store image in s3
+    var photoURL;
+    for (let i = 0; i < req.files.length; i++) {
+      photoURL = await s3Functions.upload(req.files[i]);
+      await Posts.create({
+        photoURL,
+        postId
+      });
+    }
+    res.sendStatus(201);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500).json({message: 'Error uploading photo'})
+  }
+}
 
 //get all posts
 exports.getAllPosts = async (req, res) => {
@@ -33,6 +50,6 @@ exports.getAllPosts = async (req, res) => {
 
   } catch(err) {
     console.error(err);
-    return res.status(500).json({message: 'Error with server'});
+    return res.status(500).json({message: 'Error fetching posts'});
   }
 }

@@ -6,36 +6,31 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Posts extends Model {
+  class Photos extends Model {
 
     static associate(models) {
       // define association here
-      Posts.belongsTo(models.User, { foreignKey: 'userId'});
+      Photos.belongsTo(models.Posts, { foreignKey: 'postId'});
     }
   }
 
-  Posts.init({
+  Photos.init({
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
+    photoURL: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   }, {
     sequelize,
-    modelName: 'Posts',
+    modelName: 'Photos',
   });
 
-  Posts.sync();
+  Photos.sync();
 
-  return Posts;
+  return Photos;
 };
-
 
