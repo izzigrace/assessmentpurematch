@@ -10,11 +10,17 @@ exports.register = async (req, res) => {
 
   try {
     const { id, name, email, password } = req.body;
+    var username;
+    if (req.body.username) {
+      username = req.body.username;
+    } else {
+      username = null;
+    }
 
     // check if email exists in our db
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(409).json({ message: 'Email already linked to an account' });
+      return res.sendStatus(409).json({ message: 'Email already linked to an account' });
     }
 
     // hash/encrypt password before sending
@@ -26,12 +32,13 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      username
     });
 
-    return res.status(201).json({ message: 'User registered successfully' });
+    return res.sendStatus(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'Error registering new user' });
+    return res.sendStatus(500).json({ message: 'Error registering new user' });
   }
 };
 
@@ -40,18 +47,18 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user by email
+    // Find user using given email
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.sendStatus(400).json({ message: 'Invalid credentials, email not linked to an account' });
     }
 
-    // Compare password
-    const isPasswordSame = await bcrypt.compare(password, user.password);
+    // Compare password to password in DB
+    const isPasswordTheSame = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordSame) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isPasswordTheSame) {
+      return res.sendStatus(400).json({ message: 'Invalid credentials, incorrect password' });
     }
 
     // Generate JWT token
@@ -60,6 +67,7 @@ exports.login = async (req, res) => {
     return res.json({ token });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'Error logging in' });
+    return res.sendStatus(500).json({ message: 'Error logging in' });
   }
 }
+

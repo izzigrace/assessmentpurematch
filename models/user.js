@@ -1,5 +1,7 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const Posts = require('./posts.js');
+const Comments = require('./comments.js');
 
 const {
   Model
@@ -8,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Posts, { foreignKey: 'userId' });
+      User.hasMany(models.Comments, { foreignKey: 'userId' });
     }
   }
   User.init({
@@ -28,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   }, {
     sequelize,
