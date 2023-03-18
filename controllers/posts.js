@@ -16,7 +16,7 @@ exports.createPost = async (req, res) => {
     return res.status(201).json(newPost);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({message: 'Error making post'});
+    return res.sendStatus(500).json({message: 'Error making post'});
   }
 };
 
@@ -65,7 +65,6 @@ exports.editPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const allPosts = await Posts.findAll();
-    console.log('allpostsssssssssssss', allPosts);
 
     return allPosts.map(post => ({
       title: post.title,
@@ -76,6 +75,6 @@ exports.getAllPosts = async (req, res) => {
 
   } catch(err) {
     console.error(err);
-    return res.status(500).json({message: 'Error fetching posts'});
+    return res.sendStatus(500).json({message: 'Error fetching posts'});
   }
 }

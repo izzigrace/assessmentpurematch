@@ -1,5 +1,6 @@
 'use strict';
-const user = require('./user');
+const User = require('./user.js');
+const Comments = require('./comments.js');
 const { sequelize } = require('../config/config');
 const moment = require('moment');
 
@@ -11,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // define association here
+      Posts.hasMany(models.Comments, { foreignKey: 'userId' });
       Posts.belongsTo(models.User, { foreignKey: 'userId'});
     }
   }
@@ -38,11 +40,10 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Posts',
   });
 
-  // calculate how long ago post was made
+  // calculate how long ago from now post was posted
   Posts.prototype.getTimeAgo = function() {
     return moment(this.createdAt).fromNow();
   }
-
 
   Posts.sync();
 

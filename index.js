@@ -7,10 +7,11 @@ require('dotenv').config();
 const port = process.env.PORT;
 const postController = require('./controllers/posts.js');
 const authController = require('./controllers/auth.js');
+const commentController = require('./controllers/comments.js');
 app.use(cors());
 app.use(express.json());
-const multer = require('multer');
 
+const multer = require('multer');
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } });
 
 // auth routes
@@ -20,6 +21,9 @@ app.post('/register', authController.register);
 app.post('/makePost', upload.array('photos', 5), postController.uploadPhotos, postController.createPost);
 app.get('/getPosts', postController.getAllPosts);
 app.post('/editPost', postController.editPost)
+//comments routes
+app.post('/comment', commentController.createComment);
+app.get('/comment', commentController.getComments);
 
 
 //check sequelize connection to database
