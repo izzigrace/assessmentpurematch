@@ -14,4 +14,8 @@ Here is an updated diagram to match these requirements:
 In order for a post to now have multiple comments, I will make a "comments" table. Comments will have a one to many relationship to Posts, where one Post can have many comments. Comments will also have a one to many relationship to Users, where one User can have many comments, since we also need to keep track of the user that made the comment. I will need to add a create comment route/function, and a get comments function that deals with pagination. In order for users to have the option to create a username, I can add a "username" column to my users table and allow for null values since it is optional. I can add the option to input a username in the register function.
 
 
+here are some api calls from requirement1:
+![api calls](https://user-images.githubusercontent.com/103616900/226082172-69aaafb9-7259-43d3-805c-d1e50bb8ccac.png)
+
+
 
